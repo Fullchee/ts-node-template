@@ -6,23 +6,29 @@ type Pair = {
   };
   
   function threeSum(nums: number[]): number[][] {
-    const result: number[][] = [];
+    let stringResult: string[] = [];
     const sums = getSums(nums);
-    const uniqueNums: number[] = [...new Set(nums)];
-    for (let i: number = 0; i < uniqueNums.length; i++) {
-      const num: number = uniqueNums[i];
+    for (let i: number = 0; i < nums.length; i++) {
+      const num: number = nums[i];
   
       const pairs: Pair[] = sums.get(num * -1);
       if (pairs) {
         pairs.forEach(({ index1, value1, index2, value2 }) => {
           // check for duplicates
           if (i !== index1 && i !== index2) {
-              result.push([value1, value2, num]);
+            if (value1 === num || value2 === num) {
+              debugger;
+            }
+              stringResult.push(JSON.stringify([value1, value2, num].sort()));
           }
         });
       }
     }
-    return result;
+    stringResult = [...new Set(stringResult)];
+
+    return stringResult.map(res => {
+      return JSON.parse(res);
+    });
   }
   
   function getSums(nums: number[]) {
@@ -42,5 +48,3 @@ type Pair = {
     }
     return sums;
   }
-  
-  console.log(threeSum([-1,0,1,2,-1,-4]));
